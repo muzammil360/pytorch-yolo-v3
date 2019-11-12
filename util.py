@@ -379,3 +379,24 @@ def write_results_half(prediction, confidence, num_classes, nms = True, nms_conf
                 output = torch.cat((output,out))
     
     return output
+
+
+def filterPredictions(predictions,keep_cls=[0]):
+
+    # get classes sub-tensor from predictions
+    classes = predictions[:,-1]     # last column contains the class index
+    classes = classes.long();
+    classes = classes.view(-1,1)    # convert to column vector
+
+    keep_cls = torch.tensor(keep_cls) # convert from python list to torch tensor
+    keep_cls = keep_cls.view(1,-1)    # convert it to row vector
+
+    # compare predicted classes with classes to be kept
+    mask = classes == keep_cls
+    mask = torch.sum(mask, dim=1)
+    mask = mask > 0
+
+    # apply the filter
+    predictions_filtered = predictions[mask,:]    
+
+    return predictions_filtered

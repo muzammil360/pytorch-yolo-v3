@@ -136,8 +136,6 @@ if __name__ == '__main__':
                     break
                 continue
             
-
-        
             output[:,1:5] = torch.clamp(output[:,1:5], 0.0, float(inp_dim))/inp_dim
             
 #            im_dim = im_dim.repeat(output.size(0), 1)
@@ -147,6 +145,9 @@ if __name__ == '__main__':
             
             classes = load_classes('data/coco.names')
             colors = pkl.load(open("pallete", "rb"))
+            
+            # filter the prediction (only keep classes corresponding to keep_cls)
+            output = filterPredictions(output,keep_cls=[0])
             
             list(map(lambda x: write(x, orig_im), output))
             
