@@ -118,7 +118,7 @@ def write_results(prediction, confidence, num_classes, nms = True, nms_conf = 0.
     
     batch_size = prediction.size(0)
     
-    output = prediction.new(1, prediction.size(2) + 1)
+    output = torch.tensor([]) 
     write = False
 
 
